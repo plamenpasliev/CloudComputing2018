@@ -1,0 +1,33 @@
+#creating key pair
+aws ec2 create-key-pair --key-name MyKeyPair --query "KeyMaterial" --output text > MyKeyPair.pem
+aws ec2 describe-key-pairs --key-name MyKeyPair
+
+#create security group
+aws ec2 create-security-group --group-name my-sg --description "My security group" --vpc-id vpc-48b11f32
+
+#describe security group
+aws ec2 describe-security-groups --group-ids sg-0d4abfdd80da6490e
+
+#authorize security group
+aws ec2 authorize-security-group-ingress --group-name my-sg --protocol tcp --port 22 --cidr 0.0.0.0/0
+
+#gettin cidr for subnet
+aws ec2 describe-vpcs
+
+#figure out the conflicts in the VPC with other subnets
+aws ec2 describe-subnets
+
+#create subnet
+aws ec2 create-subnet --vpc-id vpc-48b11f32 --cidr-block 172.31.96.0/20
+
+#find route tables
+aws ec2 describe-route-tables
+
+#associate subnet with the route table, so it will be public, so the instance will have a public IP
+aws ec2 associate-route-table  --subnet-id subnet-00853a9699da69eb6 --route-table-id rtb-bf2015c0
+
+#add public IP on launch
+aws ec2 modify-subnet-attribute --subnet-id subnet-00853a9699da69eb6 --map-public-ip-on-launch
+
+#launching instance
+aws ec2 run-instances --image-id ami-009d6802948d06e52 --count 1 --instance-type t2.micro --key-name MyKeyPair --security-group-ids sg-0d4abfdd80da6490e --subnet-id subnet-00853a9699da69eb6
