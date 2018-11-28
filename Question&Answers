@@ -1,0 +1,92 @@
+Cloud Computing Assignment 1 
+ 
+ 
+ 
+ 
+ 
+
+5.1Question 1 
+
+Look at linpack.sh and linpack.c and shortly describe how the benchmark works? 
+
+The LINPACK Benchmark measure the system floating point computing power. The LINPACK benchmark performance can provide a good correction over the peak performance. So this measures that how fast a computer solves linear algebra calculations, LU decomposition and solving a system of linear equations. The result of this computations are returned in floating point operations per second (FLOPS). 
+
+The LINPACK benchmark features solving a system of linear equation. For this it uses a matrix problem. Here programs take a matrix of large number of rows and columns.  
+
+Software main two functions are as bellow: 
+
+DGEFA: Performs the decomposition with partial pivoting. 
+
+DGESL: Uses that decomposition to solve the given system of linear equations. 
+
+Most of the computations cycles is for DGEFA in decomposition of matrix consisting of problem, DGESL is used to find the solution this requires floating-point operations. 
+
+DGEFA and DGESL call other routines DAXPY, IDAMAX and DSCAL. 
+
+90% of execution is for subroutine DAXPY. 
+
+DAXPY is used to multiply a scalar, times a vector, and add the results to another vector. 
+
+Thus, the benchmark requires roughly 2/3 million floating-point operations for the order of 100 X 100 order matrix. 
+
+The operations also include a few one-dimensional index operations and storage references. The LINPACK routines in general have been organized to access two-dimensional arrays by column. 
+
+In DGEFA, the call to DAXPY passes an address into the two-dimensional array A, which is then treated as a one-dimensional reference within DAXPY. Since the indexing is down a column of the two-dimensional array, the references to the one-dimensional array are sequential with unit stride.  
+
+ 
+
+5.2 Question 2 
+
+Find out what the LINPACK benchmark measures (try Google). Would you expect paravirtualization to affect the LINPACK benchmark? Why? 
+
+LINPACK benchmark measures floating point computation. All commands of LINPACK are unprivileged instructions to solve linear equation problem so paravirtualization will not affect the overall working of LINPACK benchmarking. And also in paravirtualization environment host is aware of this fact that he is running in virtualized environment. 
+
+So in short these tasks involve only unprivileged instructions and are basically all executed on the CPU so paravirtualization will not affect the benchmark results as long as the virtualized machine has dedicated access to the host’s resources. 
+
+5.3 Question 3 
+
+Look at your LINPACK measurements. Are they consistent with your expectations? If not, what could be the reason? 
+
+And there are basic 3 types of instances small, medium, large and in medium sort of instance single core processor is available to every host for computation so that’s whys the result is consistent so far. And in paravirtualized environment there is a performance increase as less overhead by hypervisor. The reason for this result could be that the benchmark only runs on a single core. This would explain the consistent results when computing resources kept constant. 
+
+So open stack are consuming more KFLOPS and is leading in this benchmark and results are consistent as configuration and computational resources are not changed and also there were not such reasons that were responsible of exploiting results. 
+
+ Memory Benchmarking 
+
+5.2.1 Question 1 
+
+Find out how the memsweep benchmark works by looking at the shell script and the C code. Would you expect virtualization to affect the memsweep benchmark? Why? 
+
+This measures the required time to access heap memory at different locations. The step is chosen that caches miss occurs and the data has to be reloaded from the memory. Because the hypervisor still needs to validate write requests so an overhead to memory calls is expected here in case of write cycle where hypervisor has to validate the request in case of ache miss. Moreover, differences between the paravirtualized machines should be the result of different memory and a different clock speed of the actual CPU. 
+
+5.2.2 Question 2 
+
+Look at your memsweep measurements. Are they consistent with your expectations? If not, what could be the reason? 
+
+The sweep time of the local machine is considerably slower than the results of the paravirtualized machines. This is somehow surprising and implies that the Amazon and open stack hosts have a much faster memory than the local machine. The main reason can be because of different hardware configurations. 
+
+Memory benchmark was not so much consistent in case of local machine but is very consistent in paravirtualized environment. And this will be because of the smart management of hypervisor in managing cache miss and in controlling unprivileged calls on domain level. 
+ 
+5.3 Disk Benchmarking 
+
+5.3.1 Question 1 
+
+Look at the disk measurements. Are they consistent with your expectations? If not, what could be the reason? 
+
+We were expecting the slower results for IO-Access or for data read and write cycles from paravirtualized machine due to the overhead of every write access validation. So sequential read and write test perfect in case of amazon but exploited for open stack in case of random access. This will be because of the different data storage methods that support sequential access better then other. 
+
+So in case of same hardware resources for all computations results are almost consistent. But if we change flavor of instances then consistency might be exploited. But as long as the configurations are same result are consistent. 
+
+5.3.2 Question 2 
+
+Based on the comparison with the measurements on your local hard drive, what kind of storage solutions do you think the two clouds use? 
+
+There are three types of cloud data storage that are available in market 
+
+Object Storage - Object storage solutions is ideal for building modern applications from scratch that require scale and flexibility, and can also be used to import existing data stores for analytics, backup, or archive. 
+
+2. File Storage - File storage solutions are ideal for use cases like large content repositories, development environments, media stores, or user home directories. 
+
+3. Block Storage - Block-based cloud storage solutions each virtual server and offer the ultra-low latency required for high performance workloads. 
+
+So looking at results Amazon will be using a hybrid of above systems as it has large content repositories and also have strong analytics support whereas in open stack block storage or object storage mixture might has been implemented.
