@@ -27,7 +27,6 @@
 #include <math.h>
 #include <time.h>
 #include <float.h>
-#include <fstream>
 
 #define DP
 
@@ -69,7 +68,7 @@ static void *mempool;
 void main(void)
 
     {
-for(int i=0; i < 2; i++){
+for(int i=0; i < 1; i++){
     char    buf[80];
     int     arsize;
     long    arsize2d,memreq,nreps;
@@ -93,8 +92,7 @@ for(int i=0; i < 2; i++){
     printf("    Reps Time(s) DGEFA   DGESL  OVERHEAD    KFLOPS\n");
     printf("----------------------------------------------------\n");
     nreps=1;
-    while (linpack(nreps,arsize)<10.)
-	nreps*=2;
+    linpack(128,arsize);
     free(mempool);
     }
 }
@@ -154,13 +152,15 @@ static REAL linpack(long nreps,int arsize)
             100.*tdgesl/totalt,100.*toverhead/totalt,
             kflops);
 
-    std::ofstream myfile;
-    myfile.open ("./result.csv");
-    //FILE fp = fopen ("./result.csv", " w+ ");
-    myfile << "a\n";
-    //fprintf(fp, "%d\n",(int)kflops);
-    myfile.close(); 
 
+    FILE * fp;
+    int now;
+    int later; 
+
+    fp = fopen ("./result.csv", "a");
+    fprintf(fp, "%d, %9.3f \n", (int)time(NULL), kflops);
+   
+    fclose(fp);
     return(totalt);
     }
 
