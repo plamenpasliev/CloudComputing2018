@@ -7,7 +7,7 @@
 FILE=nginx.csv
 
 # the url to retrieve
-URL=http://ec2-18-234-128-194.compute-1.amazonaws.com/file
+URL=ec2-3-84-192-231.compute-1.amazonaws.com/file
 
 #start two parallel downloads from the same url, b will store the sum of the results
 a=$(curl $URL -o /dev/null -w "%{time_total}") &
