@@ -1,17 +1,30 @@
-CPU benchmark questions:
+CPU benchmark questions
 1. Look at your LINPACK measurements. How do they differ between the
-platforms, what are the main reasons for the differences?
-Memory benchmark questions:
+Platforms, what are the main reasons for the differences?
+
+Among the virtualized hosts we recognize a performance increase of 250% between the small and medium instance. Between medium and large there is no notable difference whereas we would also have expected to see a similar increase in performance as the instances are supposed to have different number of AWS computing units 
+The reason for this result could be that the benchmark only runs on a single core and therefore could only make use of a single of both provided EC2 computing units. This would explain the nearly identical results of medium and large as they both provide the same EC2 computing units with the only difference that medium only offers a single while large offers two cores.
+
+Memory benchmark questions
 1. Look at your memsweep measurements. How do they differ between the
-platforms, what are the main reasons for the differences?
+Platforms, what are the main reasons for the differences?
+
+This benchmark measures the required time to access (write and clean) heap memory at different locations. The step width between two consecutive accesses is chosen such that a cache miss occurs and the data really has to be loaded from the memory. Because the hypervisor still needs to validate write requests we expect the results to show a slower performance of all virtual machines. Moreover, differences between the VM should be the result of different memory and a different clock speed of the actual CPU.
+
 Disk benchmark questions:
 1. Look at your disk write measurements. How do they differ between the
-platforms, what are the main reasons for the differences?
-2. Which disk format did you use for qemu? How do you expect this benchmark
-to behave differently on other disk formats?
+Platforms, what are the main reasons for the differences?
+
+The disk benchmark copy 1 million blocks 4096 bytes per block. We expected the io-access from a paravirtualized machine to be slower than a non-virtualized one, but compared to a full-virtualized solution it should be faster. Among the instances there should be performance increases on the more powerful instances. As Amazon states the io-performance of both the small and the medium instances should be "medium" whereas the large instances should have a "high" performance.
+
+2. Which disk format did you use for qemu? How do you expect this benchmark to behave differently on other disk formats?
+
 Fork benchmark questions:
 1. Look at your fork sum measurements. How do they differ between the
 platforms, what are the main reasons for the differences?
+
+This benchmark measures the time it takes to duplicate the benchmark process itself for 1 million times. Since a fork requires the execution of privileged instructions and write operations to the memory. The actual execution of the operations depends on the clock rate and the access time to the memory. Thus, the small instances should be slightly slower than the medium and the large instances.
+
 Nginx benchmark questions:
 1. Look at your nginx measurements. How do they differ between the platforms,
 what are the main reasons for the differences?
