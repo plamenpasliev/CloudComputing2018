@@ -1,2 +1,19 @@
-﻿Containing details of your test systems (guests and host):
-e.g. Software versions, CPU features as of /proc/cpuinfo, …
+﻿HOST system:
+
+AWS t2.micro system:
+1 vCPU with up to 3.3 GHz Intel Scalable Processor
+1gb RAM
+
+Qemu:
+512mb of memory
+1 gb virtual drive
+OS: ubuntu-16.04
+
+
+Qemu KVM:
+512mb of memory
+1 gb virtual drive
+OS: ubuntu-16.04
+
+Docker:
+
