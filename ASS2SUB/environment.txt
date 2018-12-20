@@ -15,5 +15,4 @@ Qemu KVM:
 1 gb virtual drive
 OS: ubuntu-16.04
 
-Docker:
 
