@@ -1,0 +1,34 @@
+LISTINGS: 
+
+QEMU:
+yum install qemu qemu-kvm
+
+//This creates a 1 gb virtual drive
+qemu-img create -f qcow2 testing-image.img 1G
+
+//We allocate 512mb of memory to the virtual machine (-m 512)
+qemu-system-x86_64 -m 512 -net nic -net user -hda testing-image.img -cdrom ubuntu-16.04.iso -boot d
+
+qemu -hda testing-image.img -m 256 -boot c
+
+QEMU KVM:
+//This creates a 1 gb virtual drive
+qemu-img create -f qcow2 testing-image2.img 1G
+//We allocate 512mb of memory to the virtual machine (-m 512) and enable kvm (-enable-kvm)
+qemu-system-x86_64 -m 512 -enable-kvm -net nic -net user -hda testing-image2.img -cdrom ubuntu-16.04.iso -boot d
+
+qemu -hda testing-image2.img -m 256 -boot c
+
+
+
+DOCKER:
+
+yum update -y
+
+amazon-linux-extras install docker
+
+systemctl start docker
+
+sudo usermod -a -G docker ec2-user
+
+
