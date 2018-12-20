@@ -1,0 +1,52 @@
+﻿#creating key pair
+  $ ssh-keygen -t rsa /pbcopy < ~/.ssh/id_rsa.pub 
+
+#Create instance  
+ gcloud compute instances create instance-1 --zone europe-west3-b --image-project fourth-library-124410 --machine-type n1-standard-1 
+
+#Start gcloud instances via Google cloud SDK
+gcloud compute instances start instance-1
+
+#Stop gcloud instances via Google cloud SDK 
+gcloud compute instances stop instance-1 
+
+#For uploading Files to instance. 
+gcloud compute scp [/user/abdulwahab/assigment1] wahab3060@instance-1:~/ 
+
+#FIO Installation 
+sudo apt-get install fio 
+
+#GCC Installation  
+Installing the GNU C compiler and GNU C++ compiler: 
+gcc -v 
+make -v 
+sudo apt-get install gcc
+sudo apt-get install build-essential
+sudo apt-get install wget
+
+#Grant permission to files
+chmod a+rwx *.sh
+chmod a+rwx *.csv
+
+Performance Benchmarking
+
+Disk Benchmark 
+Required Tools: 
+sudo yum groupinstall "Development Tools" 
+#Sequential Read Speed (DD) 
+sudo hdparm -Tt /dev/sda 
+
+#Sequential Write Speed (DD) 
+dd if=/dev/zero of=/tmp/test1.img bs=1G count=1 oflag=dsync  
+
+#Random Read & Write Benchmarking (FIO)  
+fio --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=test --filename=test --bs=4k --iodepth=64 --size=4G --readwrite=randrw --rwmixread=75 
+
+#Random Read Benchmarking (FIO) 
+fio --name=randread --ioengine=libaio --iodepth=16 --rw=randread --bs=4k --direct=0 --size=512M --numjobs=8 --runtime=240 --group_reporting 
+
+#Random Write Benchmarking (FIO) 
+fio --name=randwrite --ioengine=libaio --iodepth=16 --rw=randwrite --bs=4k --direct=1 --size=1G --numjobs=8 --runtime=240 --group_reporting 
+
+#File Download
+gcloud compute scp --recurse instance-1:/home/zeeshanchogtai/cpu.csv F:/
